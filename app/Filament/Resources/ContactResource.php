@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ProductResource\Pages;
-use App\Filament\Resources\ProductResource\RelationManagers;
-use App\Models\Product;
+use App\Filament\Resources\ContactResource\Pages;
+use App\Filament\Resources\ContactResource\RelationManagers;
+use App\Models\Contact;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -14,17 +14,17 @@ use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class ProductResource extends Resource
+class ContactResource extends Resource
 {
-    protected static ?string $model = Product::class;
+    protected static ?string $model = Contact::class;
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static ?string $navigationIcon = 'heroicon-o-squares-2x2';
+    protected static ?string $navigationIcon = 'heroicon-o-identification';
 
-    protected static ?string $navigationGroup = 'Shop';
+    protected static ?string $navigationGroup = 'Blog';
 
-    protected static ?int $navigationSort = 0;
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {
@@ -51,27 +51,22 @@ class ProductResource extends Resource
                                     ->dehydrated()
                                     ->required()
                                     ->maxLength(255)
-                                    ->unique(Product::class, 'slug', ignoreRecord: true),
+                                    ->unique(Contact::class, 'slug', ignoreRecord: true),
 
-                                Forms\Components\MarkdownEditor::make('description')
+                                Forms\Components\MarkdownEditor::make('address')
+                                    ->label('Address')
                                     ->columnSpan('full'),
                             ])
                             ->columns(2),
 
-                        Forms\Components\Section::make('Image')
+                        Forms\Components\Section::make('Phone')
                             ->schema([
-                                Forms\Components\FileUpload::make('image')
-                                    ->image()
-                                    ->hiddenLabel(),
-                            ])
-                            ->collapsible(),
-
-                        Forms\Components\Section::make('Pricing')
-                            ->schema([
-                                Forms\Components\TextInput::make('price')
-                                    ->numeric()
-                                    ->rules(['regex:/^\d{1,6}(\.\d{0,2})?$/'])
-                                    ->required(),
+                                Forms\Components\TextInput::make('phone')
+                                    ->tel()
+                                    ->telRegex('/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.\/0-9]*$/'),
+                                Forms\Components\TextInput::make('url')
+                                    ->label('Google Map')
+                                    ->maxLength(255),
                             ])
                             ->columns(2),
                     ])
@@ -96,16 +91,13 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('image')
-                    ->label('Image'),
-
                 Tables\Columns\TextColumn::make('name')
                     ->label('Name')
                     ->searchable()
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('price')
-                    ->label('Price')
+                Tables\Columns\TextColumn::make('phone')
+                    ->label('Phone')
                     ->searchable()
                     ->sortable(),
 
@@ -123,7 +115,7 @@ class ProductResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-            ])
+                ])
             ->filters([
                 //
             ])
@@ -149,9 +141,9 @@ class ProductResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListProducts::route('/'),
-            'create' => Pages\CreateProduct::route('/create'),
-            'edit' => Pages\EditProduct::route('/{record}/edit'),
+            'index' => Pages\ListContacts::route('/'),
+            'create' => Pages\CreateContact::route('/create'),
+            'edit' => Pages\EditContact::route('/{record}/edit'),
         ];
     }
 }
