@@ -1,6 +1,7 @@
 @extends('home.layout')
 
 <?php
+// print_r($products);
 $swiper01 = [
   ['imgBg' => 'assets/app/img/content/17.png'],
   ['imgBg' => 'assets/app/img/content/21.png'],
@@ -19,7 +20,7 @@ $tabs = [
 
 @section('content')
 
-    <section class="bg-black section-padding section-01" id="section01">
+    {{-- <section class="bg-black section-padding section-01" id="section01">
         <div class="container max-w-full">
             <div class="grid flex-row-reverse grid-cols-12">
                 <div class="col-span-12 md:col-span-5 sm:col-span-8">
@@ -295,34 +296,36 @@ $tabs = [
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
 
     <section class="bg-black section-padding section-03">
         <div class="container max-w-full">
             <div class="grid grid-cols-12 gap-8">
                 <div class="col-span-12 lg:col-span-6 md:col-span-6">
-                    <div class="food-menu-container">
-                        <div class="wrapper">
-                            <div class="food-menu-img">
-                                <img src="{{ asset('assets/app/img/content/cup-01.jpg') }}" alt="CUP IMAGE" />
-                            </div>
-                            <div class="food-menu-content">
-                                <div class="wrapper">
-                                    <div class="title">
-                                        <h5 class="font-medium uppercase color-white">
-                                            Cafe Americano
-                                        </h5>
-                                    </div>
-                                    <div class="line"></div>
-                                    <div class="price">
-                                        <h6 class="font-semibold color-p">฿125</h6>
-                                    </div>
+                    @foreach($products as $value)
+                        <div class="food-menu-container">
+                            <div class="wrapper">
+                                <div class="food-menu-img">
+                                    <img src="{{ asset('storage/'.$value->image) }}" alt="CUP IMAGE" />
                                 </div>
-                                <p class="color-white">Espresso shots topped with hot water</p>
+                                <div class="food-menu-content">
+                                    <div class="wrapper">
+                                        <div class="title">
+                                            <h5 class="font-medium uppercase color-white">
+                                                {{ $value->name }}
+                                            </h5>
+                                        </div>
+                                        <div class="line"></div>
+                                        <div class="price">
+                                            <h6 class="font-semibold color-p">฿{{ number_format($value->price, 0) }}</h6>
+                                        </div>
+                                    </div>
+                                    <p class="color-white">{{ $value->description }}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="mt-8 food-menu-container">
+                    @endforeach
+                    {{-- <div class="mt-8 food-menu-container">
                         <div class="wrapper">
                             <div class="food-menu-img">
                                 <img src="{{ asset('assets/app/img/content/cup-02.jpg') }}" alt="CUP IMAGE" />
@@ -408,9 +411,9 @@ $tabs = [
                                 <p class="color-white">Espresso shots topped with hot water</p>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
-                <div class="col-span-12 lg:col-span-6 md:col-span-6">
+                {{-- <div class="col-span-12 lg:col-span-6 md:col-span-6">
                     <div class="food-menu-container">
                         <div class="wrapper">
                             <div class="food-menu-img">
@@ -519,12 +522,12 @@ $tabs = [
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </section>
 
-    <section class="section-padding section-04">
+    {{-- <section class="section-padding section-04">
         <div class="container max-w-full">
             <div class="grid grid-cols-12">
                 <div class="col-span-12 lg:col-span-7 md:col-span-12">
@@ -746,5 +749,5 @@ $tabs = [
             </div>
           </div>
         </div>
-    </section>
+    </section> --}}
 @endsection
